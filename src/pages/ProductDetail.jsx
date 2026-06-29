@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useParams, Link, Navigate } from 'react-router-dom'
 import { PRODUCTS, CATEGORIES } from '../data/products'
+import { PHONE_PRIMARY_HREF, PHONE_PRIMARY_DISPLAY } from '../config/constants'
 
 export default function ProductDetail() {
   const { id } = useParams()
@@ -35,15 +36,15 @@ export default function ProductDetail() {
       <section className="section-pad bg-white">
         <div className="container-max">
           <div className="grid lg:grid-cols-2 gap-14 items-start">
-            {/* Left — image/visual */}
+            {/* Left — image */}
             <div className="sticky top-[140px]">
-              <div className="bg-gray-50 rounded-2xl h-80 overflow-hidden border border-gray-100 shadow-sm">
+              <div className="bg-white rounded-2xl h-80 overflow-hidden border border-gray-100 shadow-sm flex items-center justify-center">
                 {product.image && !imgError ? (
                   <img
                     src={product.image}
                     alt={product.name}
                     onError={() => setImgError(true)}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-contain p-8"
                   />
                 ) : (
                   <div className="w-full h-full bg-gradient-to-br from-brand-blue-light to-brand-teal-light flex flex-col items-center justify-center">
@@ -56,7 +57,7 @@ export default function ProductDetail() {
               </div>
 
               {/* Certifications */}
-              <div className="flex gap-3 mt-5 justify-center">
+              <div className="flex gap-3 mt-5 justify-center flex-wrap">
                 {['WHO-GMP', 'ISO', 'FSSAI'].map(c => (
                   <span key={c} className="text-xs font-semibold text-brand-blue bg-brand-blue-light border border-brand-blue/20 px-3 py-1.5 rounded-md flex items-center gap-1.5">
                     <svg className="w-3 h-3 text-green-500" fill="currentColor" viewBox="0 0 20 20">
@@ -88,7 +89,7 @@ export default function ProductDetail() {
                 </svg>
                 <div>
                   <p className="text-sm font-semibold text-brand-blue">Quality Assurance</p>
-                  <p className="text-sm text-gray-600 mt-0.5">Manufactured under WHO-GMP & ISO certified processes. Every batch undergoes rigorous QC testing before release.</p>
+                  <p className="text-sm text-gray-600 mt-0.5">Manufactured under WHO-GMP &amp; ISO certified processes. Every batch undergoes rigorous QC testing before release.</p>
                 </div>
               </div>
 
@@ -103,10 +104,7 @@ export default function ProductDetail() {
                   </svg>
                   Enquire for This Product
                 </Link>
-                <a
-                  href="tel:+91 98521 03407"
-                  className="btn-secondary flex-1 justify-center text-base py-3.5"
-                >
+                <a href={PHONE_PRIMARY_HREF} className="btn-secondary flex-1 justify-center text-base py-3.5">
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                   </svg>
@@ -115,7 +113,7 @@ export default function ProductDetail() {
               </div>
 
               <p className="text-xs text-gray-400 mt-4 text-center">
-                * For professional use only. This product is for sale to licensed healthcare professionals and registered distributors.
+                * For professional use only. For sale to licensed healthcare professionals and registered distributors.
               </p>
             </div>
           </div>
@@ -128,14 +126,30 @@ export default function ProductDetail() {
           <div className="container-max">
             <h2 className="text-2xl font-bold text-gray-900 mb-8">More {cat?.label}</h2>
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {related.map(p => (
-                <Link key={p.id} to={`/products/${p.id}`} className="bg-white border border-gray-100 rounded-xl p-5 hover:shadow-md transition-shadow group">
-                  <div className="text-3xl mb-3">{cat?.icon}</div>
-                  <h3 className="font-semibold text-gray-900 group-hover:text-brand-blue transition-colors mb-1">{p.name}</h3>
-                  <p className="text-xs text-gray-400 mb-2">{p.form}</p>
-                  <p className="text-sm text-gray-500 line-clamp-2">{p.composition}</p>
-                </Link>
-              ))}
+              {related.map(p => {
+                const [relImgError, setRelImgError] = useState(false)
+                return (
+                  <Link key={p.id} to={`/products/${p.id}`} className="bg-white border border-gray-100 rounded-xl overflow-hidden hover:shadow-md transition-shadow group">
+                    <div className="h-36 bg-white flex items-center justify-center border-b border-gray-50">
+                      {p.image && !relImgError ? (
+                        <img
+                          src={p.image}
+                          alt={p.name}
+                          onError={() => setRelImgError(true)}
+                          className="w-full h-full object-contain p-4"
+                        />
+                      ) : (
+                        <span className="text-4xl">{cat?.icon}</span>
+                      )}
+                    </div>
+                    <div className="p-4">
+                      <h3 className="font-semibold text-gray-900 group-hover:text-brand-blue transition-colors mb-1">{p.name}</h3>
+                      <p className="text-xs text-gray-400 mb-1">{p.form}</p>
+                      <p className="text-sm text-gray-500 line-clamp-2">{p.composition}</p>
+                    </div>
+                  </Link>
+                )
+              })}
             </div>
           </div>
         </section>

@@ -2,7 +2,13 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import SectionHeader from '../components/ui/SectionHeader'
 import { CATEGORIES, PRODUCTS } from '../data/products'
-import ProductCard from '../components/ui/ProductCard'
+import ProductCarousel from '../components/ui/ProductCarousel'
+import {
+  PHONE_PRIMARY_DISPLAY, PHONE_PRIMARY_HREF,
+  PHONE_SECONDARY_DISPLAY, PHONE_SECONDARY_HREF,
+  WHATSAPP_CONTACT_HREF,
+  COMPANY_NAME,
+} from '../config/constants'
 
 const TRUST_POINTS = [
   {
@@ -62,23 +68,17 @@ const TRUST_POINTS = [
 ]
 
 const STATS = [
-  { value: '500+', label: 'Products Range' },
+  { value: `${PRODUCTS.length}`, label: 'Live Products' },
   { value: '7+', label: 'Product Categories' },
   { value: '3', label: 'Major Certifications' },
   { value: '100%', label: 'Quality Assurance' },
 ]
-
-// Show 4 featured products across different categories
-const FEATURED = PRODUCTS.filter(p =>
-  ['azixive-250-500', 'hupan-dsr', 'humezyme-syrup', 'lulixive-cream'].includes(p.id)
-)
 
 export default function Home() {
   return (
     <>
       {/* ─── HERO ─────────────────────────────────────────────────────────── */}
       <section className="relative bg-gradient-to-br from-brand-blue-dark via-brand-blue to-[#1e5fa8] text-white overflow-hidden">
-        {/* Background pattern */}
         <div className="absolute inset-0 opacity-5">
           <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
             <defs>
@@ -92,7 +92,6 @@ export default function Home() {
 
         <div className="container-max px-4 sm:px-6 lg:px-8 section-pad relative z-10">
           <div className="grid lg:grid-cols-2 gap-14 items-center">
-            {/* Left content */}
             <div>
               <div className="inline-flex items-center gap-2 bg-white/10 border border-white/20 text-white text-xs font-semibold uppercase tracking-widest px-4 py-2 rounded-full mb-6">
                 <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20">
@@ -107,10 +106,9 @@ export default function Home() {
               </h1>
 
               <p className="text-lg text-blue-100 leading-relaxed mb-8 max-w-lg">
-                Humedaxive Pharma — providing high-quality, certified pharmaceutical products to doctors, clinics, hospitals and distributors across India. Bulk enquiries welcome.
+                {COMPANY_NAME} — providing high-quality, certified pharmaceutical products to doctors, clinics, hospitals and distributors across India. Bulk enquiries welcome.
               </p>
 
-              {/* CTA buttons */}
               <div className="flex flex-wrap gap-4 mb-10">
                 <Link to="/enquiry" className="bg-white text-brand-blue font-bold px-7 py-3.5 rounded-md hover:bg-blue-50 transition-colors text-base shadow-lg flex items-center gap-2">
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -126,19 +124,25 @@ export default function Home() {
                 </Link>
               </div>
 
-              {/* Phone numbers */}
               <div className="flex flex-wrap gap-5">
-                <a href="tel:+91 98521 03407" className="flex items-center gap-2 text-sm text-blue-200 hover:text-white transition-colors">
+                <a href={PHONE_PRIMARY_HREF} className="flex items-center gap-2 text-sm text-blue-200 hover:text-white transition-colors">
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                   </svg>
-                  +91 98521 03407
+                  {PHONE_PRIMARY_DISPLAY}
                 </a>
-                <a href="tel:+918877060059" className="flex items-center gap-2 text-sm text-blue-200 hover:text-white transition-colors">
+                <a href={PHONE_SECONDARY_HREF} className="flex items-center gap-2 text-sm text-blue-200 hover:text-white transition-colors">
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                   </svg>
-                  +91 88770 60059
+                  {PHONE_SECONDARY_DISPLAY}
+                </a>
+                <a href={WHATSAPP_CONTACT_HREF} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-sm text-blue-200 hover:text-white transition-colors">
+                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+                    <path d="M12 0C5.373 0 0 5.373 0 12c0 2.128.557 4.128 1.535 5.864L.057 23.571a.5.5 0 00.613.635l5.878-1.499A11.955 11.955 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.97 0-3.817-.544-5.394-1.489l-.386-.232-3.979 1.015 1.06-3.878-.253-.402A9.96 9.96 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/>
+                  </svg>
+                  WhatsApp
                 </a>
               </div>
             </div>
@@ -156,7 +160,7 @@ export default function Home() {
                   ))}
                 </div>
                 <div className="mt-6 pt-6 border-t border-white/20">
-                  <p className="text-blue-200 text-sm text-center">Trusted by doctors & distributors across Bihar, India</p>
+                  <p className="text-blue-200 text-sm text-center">Trusted by doctors &amp; distributors across Bihar, India</p>
                 </div>
               </div>
             </div>
@@ -220,17 +224,15 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ─── FEATURED PRODUCTS ────────────────────────────────────────────── */}
+      {/* ─── FEATURED PRODUCTS CAROUSEL ───────────────────────────────────── */}
       <section className="section-pad bg-gray-50">
         <div className="container-max">
           <SectionHeader
-            tag="Featured Products"
+            tag="Our Products"
             title="Quality Medicines Across All Categories"
-            subtitle="A snapshot of our pharmaceutical range — each product manufactured under WHO-GMP certified processes."
+            subtitle="Browse our full pharmaceutical range — each product manufactured under WHO-GMP certified processes."
           />
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {FEATURED.map(p => <ProductCard key={p.id} product={p} />)}
-          </div>
+          <ProductCarousel products={PRODUCTS} />
           <div className="text-center mt-10">
             <Link to="/products" className="btn-primary">
               View Complete Product Catalogue
@@ -279,7 +281,7 @@ export default function Home() {
             <Link to="/enquiry" className="bg-white text-brand-teal font-bold px-8 py-3.5 rounded-md hover:bg-teal-50 transition-colors shadow-lg">
               Send Bulk Enquiry
             </Link>
-            <a href="tel:+91 98521 03407" className="border-2 border-white/50 text-white font-semibold px-8 py-3.5 rounded-md hover:bg-white/10 transition-colors">
+            <a href={PHONE_PRIMARY_HREF} className="border-2 border-white/50 text-white font-semibold px-8 py-3.5 rounded-md hover:bg-white/10 transition-colors">
               Call Us Now
             </a>
           </div>

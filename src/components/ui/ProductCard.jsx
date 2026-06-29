@@ -8,23 +8,23 @@ export default function ProductCard({ product }) {
 
   return (
     <div className="bg-white border border-gray-100 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 group flex flex-col">
-      {/* Product image */}
-      <div className="relative overflow-hidden bg-gray-50 h-52">
+      {/* Product image — object-contain so full box is always visible */}
+      <div className="relative bg-white h-52 flex items-center justify-center overflow-hidden">
         {product.image && !imgError ? (
           <img
             src={product.image}
             alt={product.name}
             onError={() => setImgError(true)}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+            className="w-full h-full object-contain p-4 group-hover:scale-105 transition-transform duration-500"
           />
         ) : (
           <div className="w-full h-full bg-gradient-to-br from-brand-blue-light to-brand-teal-light flex flex-col items-center justify-center">
             <span className="text-5xl mb-2">{cat?.icon || '💊'}</span>
           </div>
         )}
-        {/* Category badge overlay */}
+        {/* Category badge */}
         <div className="absolute top-3 left-3">
-          <span className="text-xs font-semibold text-brand-blue uppercase tracking-wider bg-white/90 backdrop-blur-sm px-2.5 py-1 rounded-full shadow-sm">
+          <span className="text-xs font-semibold text-brand-blue uppercase tracking-wider bg-white/90 backdrop-blur-sm px-2.5 py-1 rounded-full shadow-sm border border-brand-blue/10">
             {cat?.label}
           </span>
         </div>

@@ -1,6 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import { useSearchParams, Link } from 'react-router-dom'
 import { PRODUCTS } from '../data/products'
+import { sendEnquiryEmail } from '../lib/emailjs'
+import {
+  PHONE_PRIMARY_DISPLAY, PHONE_PRIMARY_HREF,
+  PHONE_SECONDARY_DISPLAY, PHONE_SECONDARY_HREF,
+  WHATSAPP_ENQUIRY_HREF,
+  EMAIL, EMAIL_HREF,
+} from '../config/constants'
 
 const ORG_TYPES = [
   'Doctor (Private Practice)',
@@ -28,8 +35,9 @@ export default function Enquiry() {
   const [form, setForm] = useState(INIT)
   const [errors, setErrors] = useState({})
   const [submitted, setSubmitted] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [sendError, setSendError] = useState('')
 
-  // Pre-fill product from URL param
   useEffect(() => {
     const preProduct = searchParams.get('product')
     if (preProduct) setForm(prev => ({ ...prev, productInterest: preProduct }))
@@ -51,16 +59,34 @@ export default function Enquiry() {
     const { name, value } = e.target
     setForm(prev => ({ ...prev, [name]: value }))
     if (errors[name]) setErrors(prev => ({ ...prev, [name]: '' }))
+    if (sendError) setSendError('')
   }
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault()
     const e2 = validate()
     if (Object.keys(e2).length > 0) { setErrors(e2); return }
-    // TODO: POST to backend / EmailJS / Firebase
-    console.log('Enquiry form submitted:', form)
-    setSubmitted(true)
-    setForm(INIT)
+
+    setLoading(true)
+    setSendError('')
+    try {
+      await sendEnquiryEmail({
+        name: form.name.trim(),
+        orgType: form.orgType,
+        organization: form.organization.trim(),
+        phone: form.phone.trim(),
+        email: form.email.trim(),
+        productInterest: form.productInterest.trim(),
+        quantity: form.quantity.trim(),
+        message: form.message.trim(),
+      })
+      setSubmitted(true)
+      setForm(INIT)
+    } catch {
+      setSendError('Failed to submit enquiry. Please call us directly or send an email — we\'ll respond promptly.')
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -84,7 +110,7 @@ export default function Enquiry() {
               { icon: '🔒', text: 'Confidential enquiry' },
               { icon: '⚡', text: 'Response within 24 hours' },
               { icon: '🤝', text: 'No spam, direct response only' },
-              { icon: '📞', text: 'Call us: +91 98521 03407' },
+              { icon: '📞', text: `Call us: ${PHONE_PRIMARY_DISPLAY}` },
             ].map(item => (
               <div key={item.text} className="flex items-center gap-1.5">
                 <span>{item.icon}</span>
@@ -101,7 +127,6 @@ export default function Enquiry() {
 
             {/* Sidebar */}
             <div className="space-y-6">
-              {/* Who can enquire */}
               <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
                 <h3 className="font-bold text-gray-900 mb-4">Who Should Enquire?</h3>
                 <div className="space-y-3">
@@ -127,24 +152,30 @@ export default function Enquiry() {
                 <h3 className="font-bold mb-4">Prefer to Call?</h3>
                 <p className="text-blue-100 text-sm mb-4">Our sales team is available Monday–Saturday, 9AM–6PM.</p>
                 <div className="space-y-3">
-                  <a href="tel:+91 98521 03407" className="flex items-center gap-2 text-white hover:text-blue-200 transition-colors font-semibold">
+                  <a href={PHONE_PRIMARY_HREF} className="flex items-center gap-2 text-white hover:text-blue-200 transition-colors font-semibold">
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                     </svg>
-                    +91 98521 03407
+                    {PHONE_PRIMARY_DISPLAY}
                   </a>
-                  <a href="tel:+918877060059" className="flex items-center gap-2 text-white hover:text-blue-200 transition-colors font-semibold">
+                  <a href={PHONE_SECONDARY_HREF} className="flex items-center gap-2 text-white hover:text-blue-200 transition-colors font-semibold">
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                     </svg>
-                    +91 88770 60059
+                    {PHONE_SECONDARY_DISPLAY}
+                  </a>
+                  <a href={EMAIL_HREF} className="flex items-center gap-2 text-white hover:text-blue-200 transition-colors text-sm break-all">
+                    <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                    </svg>
+                    {EMAIL}
                   </a>
                 </div>
               </div>
 
               {/* WhatsApp */}
               <a
-                href="https://wa.me/919853103407?text=Hello%2C%20I%20would%20like%20to%20enquire%20about%20your%20pharmaceutical%20products."
+                href={WHATSAPP_ENQUIRY_HREF}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-3 bg-green-500 hover:bg-green-600 text-white font-semibold px-6 py-4 rounded-xl transition-colors shadow-sm w-full"
@@ -180,31 +211,27 @@ export default function Enquiry() {
                   </div>
                 ) : (
                   <form onSubmit={handleSubmit} className="space-y-5" noValidate>
-                    {/* Name + Org type */}
+                    {sendError && (
+                      <div className="bg-red-50 border border-red-200 rounded-lg p-4 flex gap-3">
+                        <svg className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <div>
+                          <p className="text-sm text-red-700 font-medium">{sendError}</p>
+                          <a href={PHONE_PRIMARY_HREF} className="text-xs text-red-600 hover:underline mt-1 block">Call us: {PHONE_PRIMARY_DISPLAY}</a>
+                        </div>
+                      </div>
+                    )}
+
                     <div className="grid sm:grid-cols-2 gap-5">
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1.5">
-                          Full Name <span className="text-red-500">*</span>
-                        </label>
-                        <input
-                          name="name"
-                          value={form.name}
-                          onChange={handleChange}
-                          placeholder="Your full name"
-                          className={`form-input ${errors.name ? 'border-red-400' : ''}`}
-                        />
+                        <label className="block text-sm font-medium text-gray-700 mb-1.5">Full Name <span className="text-red-500">*</span></label>
+                        <input name="name" value={form.name} onChange={handleChange} placeholder="Your full name" className={`form-input ${errors.name ? 'border-red-400' : ''}`} />
                         {errors.name && <p className="text-xs text-red-500 mt-1">{errors.name}</p>}
                       </div>
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1.5">
-                          Organization Type <span className="text-red-500">*</span>
-                        </label>
-                        <select
-                          name="orgType"
-                          value={form.orgType}
-                          onChange={handleChange}
-                          className={`form-input bg-white ${errors.orgType ? 'border-red-400' : ''}`}
-                        >
+                        <label className="block text-sm font-medium text-gray-700 mb-1.5">Organization Type <span className="text-red-500">*</span></label>
+                        <select name="orgType" value={form.orgType} onChange={handleChange} className={`form-input bg-white ${errors.orgType ? 'border-red-400' : ''}`}>
                           <option value="">Select type...</option>
                           {ORG_TYPES.map(t => <option key={t} value={t}>{t}</option>)}
                         </select>
@@ -212,105 +239,65 @@ export default function Enquiry() {
                       </div>
                     </div>
 
-                    {/* Organization name */}
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1.5">
-                        Organization / Clinic / Hospital Name <span className="text-gray-400 font-normal">(optional)</span>
-                      </label>
-                      <input
-                        name="organization"
-                        value={form.organization}
-                        onChange={handleChange}
-                        placeholder="e.g. City General Hospital, ABC Distributors"
-                        className="form-input"
-                      />
+                      <label className="block text-sm font-medium text-gray-700 mb-1.5">Organization / Clinic / Hospital Name <span className="text-gray-400 font-normal">(optional)</span></label>
+                      <input name="organization" value={form.organization} onChange={handleChange} placeholder="e.g. City General Hospital, ABC Distributors" className="form-input" />
                     </div>
 
-                    {/* Phone + Email */}
                     <div className="grid sm:grid-cols-2 gap-5">
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1.5">
-                          Phone / WhatsApp <span className="text-red-500">*</span>
-                        </label>
-                        <input
-                          name="phone"
-                          type="tel"
-                          value={form.phone}
-                          onChange={handleChange}
-                          placeholder="10-digit mobile number"
-                          className={`form-input ${errors.phone ? 'border-red-400' : ''}`}
-                        />
+                        <label className="block text-sm font-medium text-gray-700 mb-1.5">Phone / WhatsApp <span className="text-red-500">*</span></label>
+                        <input name="phone" type="tel" value={form.phone} onChange={handleChange} placeholder="10-digit mobile number" className={`form-input ${errors.phone ? 'border-red-400' : ''}`} />
                         {errors.phone && <p className="text-xs text-red-500 mt-1">{errors.phone}</p>}
                       </div>
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1.5">
-                          Email Address <span className="text-gray-400 font-normal">(optional)</span>
-                        </label>
-                        <input
-                          name="email"
-                          type="email"
-                          value={form.email}
-                          onChange={handleChange}
-                          placeholder="you@example.com"
-                          className={`form-input ${errors.email ? 'border-red-400' : ''}`}
-                        />
+                        <label className="block text-sm font-medium text-gray-700 mb-1.5">Email Address <span className="text-gray-400 font-normal">(optional)</span></label>
+                        <input name="email" type="email" value={form.email} onChange={handleChange} placeholder="you@example.com" className={`form-input ${errors.email ? 'border-red-400' : ''}`} />
                         {errors.email && <p className="text-xs text-red-500 mt-1">{errors.email}</p>}
                       </div>
                     </div>
 
-                    {/* Product interest */}
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1.5">
-                        Product(s) of Interest <span className="text-red-500">*</span>
-                      </label>
-                      <input
-                        name="productInterest"
-                        value={form.productInterest}
-                        onChange={handleChange}
-                        placeholder="e.g. Amoxicillin Capsules, Paracetamol Tablets, or All Injections"
-                        className={`form-input ${errors.productInterest ? 'border-red-400' : ''}`}
-                      />
+                      <label className="block text-sm font-medium text-gray-700 mb-1.5">Product(s) of Interest <span className="text-red-500">*</span></label>
+                      <input name="productInterest" value={form.productInterest} onChange={handleChange} placeholder="e.g. Azithromycin Capsules, Paracetamol Tablets, or All Injections" className={`form-input ${errors.productInterest ? 'border-red-400' : ''}`} />
                       {errors.productInterest && <p className="text-xs text-red-500 mt-1">{errors.productInterest}</p>}
                       <p className="text-xs text-gray-400 mt-1">
                         <Link to="/products" className="text-brand-blue hover:underline">Browse our product catalogue</Link> to find the right products.
                       </p>
                     </div>
 
-                    {/* Quantity */}
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1.5">
-                        Estimated Quantity / Order Size <span className="text-gray-400 font-normal">(optional)</span>
-                      </label>
-                      <input
-                        name="quantity"
-                        value={form.quantity}
-                        onChange={handleChange}
-                        placeholder="e.g. 500 strips/month, 10,000 units, or Monthly supply for 50 patients"
-                        className="form-input"
-                      />
+                      <label className="block text-sm font-medium text-gray-700 mb-1.5">Estimated Quantity / Order Size <span className="text-gray-400 font-normal">(optional)</span></label>
+                      <input name="quantity" value={form.quantity} onChange={handleChange} placeholder="e.g. 500 strips/month, 10,000 units, or Monthly supply for 50 patients" className="form-input" />
                     </div>
 
-                    {/* Message */}
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1.5">
-                        Additional Requirements <span className="text-red-500">*</span>
-                      </label>
-                      <textarea
-                        name="message"
-                        value={form.message}
-                        onChange={handleChange}
-                        rows={4}
-                        placeholder="Describe your requirement — delivery location, pricing expectation, preferred formulation, or any other details..."
-                        className={`form-input resize-none ${errors.message ? 'border-red-400' : ''}`}
-                      />
+                      <label className="block text-sm font-medium text-gray-700 mb-1.5">Additional Requirements <span className="text-red-500">*</span></label>
+                      <textarea name="message" value={form.message} onChange={handleChange} rows={4} placeholder="Describe your requirement — delivery location, pricing expectation, preferred formulation, or any other details..." className={`form-input resize-none ${errors.message ? 'border-red-400' : ''}`} />
                       {errors.message && <p className="text-xs text-red-500 mt-1">{errors.message}</p>}
                     </div>
 
-                    <button type="submit" className="btn-teal w-full justify-center text-base py-4">
-                      Submit Enquiry
-                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
-                      </svg>
+                    <button
+                      type="submit"
+                      disabled={loading}
+                      className="btn-teal w-full justify-center text-base py-4 disabled:opacity-60 disabled:cursor-not-allowed"
+                    >
+                      {loading ? (
+                        <>
+                          <svg className="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                          </svg>
+                          Submitting Enquiry...
+                        </>
+                      ) : (
+                        <>
+                          Submit Enquiry
+                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                          </svg>
+                        </>
+                      )}
                     </button>
 
                     <p className="text-xs text-center text-gray-400">

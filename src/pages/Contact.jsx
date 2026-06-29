@@ -1,5 +1,13 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { sendContactEmail } from '../lib/emailjs'
+import {
+  PHONE_PRIMARY_DISPLAY, PHONE_PRIMARY_HREF,
+  PHONE_SECONDARY_DISPLAY, PHONE_SECONDARY_HREF,
+  WHATSAPP_CONTACT_HREF,
+  EMAIL, EMAIL_HREF,
+  COMPANY_NAME,
+} from '../config/constants'
 
 const INIT = { name: '', phone: '', email: '', message: '' }
 
@@ -7,6 +15,8 @@ export default function Contact() {
   const [form, setForm] = useState(INIT)
   const [errors, setErrors] = useState({})
   const [submitted, setSubmitted] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [sendError, setSendError] = useState('')
 
   function validate() {
     const e = {}
@@ -22,16 +32,30 @@ export default function Contact() {
     const { name, value } = e.target
     setForm(prev => ({ ...prev, [name]: value }))
     if (errors[name]) setErrors(prev => ({ ...prev, [name]: '' }))
+    if (sendError) setSendError('')
   }
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault()
     const e2 = validate()
     if (Object.keys(e2).length > 0) { setErrors(e2); return }
-    // TODO: integrate with backend / EmailJS / Firebase
-    console.log('Contact form submitted:', form)
-    setSubmitted(true)
-    setForm(INIT)
+
+    setLoading(true)
+    setSendError('')
+    try {
+      await sendContactEmail({
+        name: form.name.trim(),
+        phone: form.phone.trim(),
+        email: form.email.trim(),
+        message: form.message.trim(),
+      })
+      setSubmitted(true)
+      setForm(INIT)
+    } catch {
+      setSendError('Failed to send your message. Please try calling us directly or send an email.')
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -53,38 +77,29 @@ export default function Contact() {
 
             {/* Contact info sidebar */}
             <div className="lg:col-span-2 space-y-6">
-              {/* Direct contacts */}
               <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-7">
                 <h2 className="text-xl font-bold text-gray-900 mb-5">Direct Contact</h2>
                 <div className="space-y-5">
                   <ContactItem
-                    icon={
-                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                      </svg>
-                    }
+                    icon={<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" /></svg>}
                     label="Phone / WhatsApp"
                     lines={[
-                      <a key="1" href="tel:+91 98521 03407" className="text-brand-blue font-semibold hover:underline">+91 98521 03407</a>,
-                      <a key="2" href="tel:+918877060059" className="text-brand-blue font-semibold hover:underline">+91 88770 60059</a>,
+                      <a key="1" href={PHONE_PRIMARY_HREF} className="text-brand-blue font-semibold hover:underline">{PHONE_PRIMARY_DISPLAY}</a>,
+                      <a key="2" href={PHONE_SECONDARY_HREF} className="text-brand-blue font-semibold hover:underline">{PHONE_SECONDARY_DISPLAY}</a>,
                     ]}
                   />
                   <ContactItem
-                    icon={
-                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                      </svg>
-                    }
+                    icon={<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>}
+                    label="Email"
+                    lines={[<a key="email" href={EMAIL_HREF} className="text-brand-blue font-semibold hover:underline break-all">{EMAIL}</a>]}
+                  />
+                  <ContactItem
+                    icon={<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>}
                     label="Location"
                     lines={['Bihar, India']}
                   />
                   <ContactItem
-                    icon={
-                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                      </svg>
-                    }
+                    icon={<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>}
                     label="Business Hours"
                     lines={['Monday – Saturday: 9:00 AM – 6:00 PM', 'Sunday: Closed']}
                   />
@@ -93,7 +108,7 @@ export default function Contact() {
 
               {/* WhatsApp CTA */}
               <a
-                href="https://wa.me/919853103407?text=Hello%2C%20I%20am%20interested%20in%20enquiring%20about%20Humedaxive%20Pharma%20products."
+                href={WHATSAPP_CONTACT_HREF}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-3 bg-green-500 hover:bg-green-600 text-white font-semibold px-6 py-4 rounded-xl transition-colors shadow-sm"
@@ -143,6 +158,18 @@ export default function Contact() {
                   </div>
                 ) : (
                   <form onSubmit={handleSubmit} className="space-y-5" noValidate>
+                    {sendError && (
+                      <div className="bg-red-50 border border-red-200 rounded-lg p-4 flex gap-3">
+                        <svg className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <div>
+                          <p className="text-sm text-red-700 font-medium">{sendError}</p>
+                          <a href={EMAIL_HREF} className="text-xs text-red-600 hover:underline mt-1 block">Email us directly: {EMAIL}</a>
+                        </div>
+                      </div>
+                    )}
+
                     <div className="grid sm:grid-cols-2 gap-5">
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1.5">Full Name <span className="text-red-500">*</span></label>
@@ -155,24 +182,43 @@ export default function Contact() {
                         {errors.phone && <p className="text-xs text-red-500 mt-1">{errors.phone}</p>}
                       </div>
                     </div>
+
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1.5">Email Address <span className="text-gray-400 font-normal">(optional)</span></label>
                       <input name="email" type="email" value={form.email} onChange={handleChange} placeholder="you@example.com" className={`form-input ${errors.email ? 'border-red-400 focus:ring-red-300' : ''}`} />
                       {errors.email && <p className="text-xs text-red-500 mt-1">{errors.email}</p>}
                     </div>
+
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1.5">Your Message <span className="text-red-500">*</span></label>
                       <textarea name="message" value={form.message} onChange={handleChange} rows={5} placeholder="How can we help you?" className={`form-input resize-none ${errors.message ? 'border-red-400 focus:ring-red-300' : ''}`} />
                       {errors.message && <p className="text-xs text-red-500 mt-1">{errors.message}</p>}
                     </div>
-                    <button type="submit" className="btn-primary w-full justify-center text-base py-3.5">
-                      Send Message
-                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
-                      </svg>
+
+                    <button
+                      type="submit"
+                      disabled={loading}
+                      className="btn-primary w-full justify-center text-base py-3.5 disabled:opacity-60 disabled:cursor-not-allowed"
+                    >
+                      {loading ? (
+                        <>
+                          <svg className="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                          </svg>
+                          Sending...
+                        </>
+                      ) : (
+                        <>
+                          Send Message
+                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                          </svg>
+                        </>
+                      )}
                     </button>
                     <p className="text-xs text-gray-400 text-center">
-                      Prefer to call? Reach us at <a href="tel:+91 98521 03407" className="text-brand-blue hover:underline">+91 98521 03407</a>
+                      Prefer to call? Reach us at <a href={PHONE_PRIMARY_HREF} className="text-brand-blue hover:underline">{PHONE_PRIMARY_DISPLAY}</a>
                     </p>
                   </form>
                 )}
@@ -180,34 +226,62 @@ export default function Contact() {
             </div>
           </div>
 
-          {/* Map placeholder */}
+          {/* Find Us section — replaces map placeholder */}
           <div className="mt-10 bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
             <div className="bg-brand-blue-light border-b border-brand-blue/10 px-6 py-4 flex items-center gap-2">
               <svg className="w-5 h-5 text-brand-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
               </svg>
-              <span className="font-semibold text-brand-blue">Humedaxive Pharma — Bihar, India</span>
+              <span className="font-semibold text-brand-blue">{COMPANY_NAME} — Bihar, India</span>
             </div>
-            <div className="h-64 bg-gradient-to-br from-gray-100 to-gray-200 flex flex-col items-center justify-center text-center px-6">
-              <div className="w-12 h-12 bg-brand-blue/10 rounded-full flex items-center justify-center mb-3">
-                <svg className="w-6 h-6 text-brand-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>
+            <div className="p-8 grid sm:grid-cols-3 gap-8 items-center">
+              <div className="sm:col-span-2 space-y-4">
+                <div className="flex gap-3">
+                  <svg className="w-5 h-5 text-brand-teal flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                  <div>
+                    <p className="text-sm font-semibold text-gray-900">Headquarters</p>
+                    <p className="text-sm text-gray-500 mt-0.5">Bihar, India</p>
+                  </div>
+                </div>
+                <div className="flex gap-3">
+                  <svg className="w-5 h-5 text-brand-teal flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  <div>
+                    <p className="text-sm font-semibold text-gray-900">Business Hours</p>
+                    <p className="text-sm text-gray-500 mt-0.5">Monday – Saturday: 9:00 AM – 6:00 PM</p>
+                  </div>
+                </div>
+                <div className="flex gap-3">
+                  <svg className="w-5 h-5 text-brand-teal flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                  </svg>
+                  <div>
+                    <p className="text-sm font-semibold text-gray-900">Email</p>
+                    <a href={EMAIL_HREF} className="text-sm text-brand-blue hover:underline mt-0.5 block">{EMAIL}</a>
+                  </div>
+                </div>
               </div>
-              <p className="text-gray-600 font-medium">Bihar, India</p>
-              <p className="text-gray-400 text-sm mt-1">
-                Embed Google Maps iframe here with your exact address.
-              </p>
-              <a
-                href="https://maps.google.com/?q=Bihar,India"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-3 text-sm text-brand-blue hover:underline font-medium"
-              >
-                Open in Google Maps →
-              </a>
+              <div className="text-center">
+                <a
+                  href="https://maps.google.com/?q=Bihar,India"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex flex-col items-center gap-3 p-6 rounded-xl border-2 border-brand-blue/20 hover:border-brand-blue hover:bg-brand-blue-light transition-all group"
+                >
+                  <div className="w-12 h-12 bg-brand-blue/10 group-hover:bg-brand-blue rounded-full flex items-center justify-center transition-colors">
+                    <svg className="w-6 h-6 text-brand-blue group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                  </div>
+                  <span className="text-sm font-semibold text-brand-blue">Open in Google Maps</span>
+                </a>
+              </div>
             </div>
           </div>
         </div>
