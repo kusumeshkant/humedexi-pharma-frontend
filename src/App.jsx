@@ -8,6 +8,9 @@ import ProductDetail from './pages/ProductDetail'
 import Certifications from './pages/Certifications'
 import Contact from './pages/Contact'
 import Enquiry from './pages/Enquiry'
+import PrivacyPolicy from './pages/PrivacyPolicy'
+import Terms from './pages/Terms'
+import Disclaimer from './pages/Disclaimer'
 
 // Scroll to top on route change
 function ScrollToTop() {
@@ -41,6 +44,9 @@ export default function App() {
           <Route path="/certifications" element={<Certifications />} />
           <Route path="/contact"        element={<Contact />} />
           <Route path="/enquiry"        element={<Enquiry />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="/terms"          element={<Terms />} />
+          <Route path="/disclaimer"     element={<Disclaimer />} />
           <Route path="*"               element={<NotFound />} />
         </Routes>
       </Layout>

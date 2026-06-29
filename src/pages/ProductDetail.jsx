@@ -1,7 +1,43 @@
 import React, { useState } from 'react'
 import { useParams, Link, Navigate } from 'react-router-dom'
 import { PRODUCTS, CATEGORIES } from '../data/products'
-import { PHONE_PRIMARY_HREF, PHONE_PRIMARY_DISPLAY } from '../config/constants'
+import { PHONE_PRIMARY_HREF } from '../config/constants'
+import ProductBadge from '../components/ui/ProductBadge'
+
+function RelatedProductCard({ product, cat }) {
+  const [imgError, setImgError] = useState(false)
+  return (
+    <Link to={`/products/${product.id}`} className="bg-white border border-gray-100 rounded-xl overflow-hidden hover:shadow-md transition-shadow group">
+      <div className="relative h-36 bg-white flex items-center justify-center border-b border-gray-50">
+        {product.badge && (
+          <div className="absolute top-2 right-2">
+            <ProductBadge type={product.badge} />
+          </div>
+        )}
+        {product.image && !imgError ? (
+          <img
+            src={product.image}
+            alt={product.name}
+            loading="lazy"
+            decoding="async"
+            onError={() => setImgError(true)}
+            className="w-full h-full object-contain p-4"
+          />
+        ) : (
+          <span className="text-4xl">{cat?.icon}</span>
+        )}
+      </div>
+      <div className="p-4">
+        <h3 className="font-semibold text-gray-900 group-hover:text-brand-blue transition-colors mb-1 line-clamp-1">{product.name}</h3>
+        <p className="text-xs text-gray-400 mb-1">{product.form}</p>
+        {product.therapeuticSegment && (
+          <p className="text-xs text-brand-blue/70 font-medium mb-1">{product.therapeuticSegment}</p>
+        )}
+        <p className="text-sm text-gray-500 line-clamp-2">{product.composition}</p>
+      </div>
+    </Link>
+  )
+}
 
 export default function ProductDetail() {
   const { id } = useParams()
@@ -13,12 +49,21 @@ export default function ProductDetail() {
   const related = PRODUCTS.filter(p => p.category === product.category && p.id !== product.id).slice(0, 3)
   const [imgError, setImgError] = useState(false)
 
+  const specs = [
+    product.strength && { label: 'Strength / Dose', value: product.strength },
+    product.route && { label: 'Route of Administration', value: product.route },
+    product.therapeuticSegment && { label: 'Therapeutic Segment', value: product.therapeuticSegment },
+    { label: 'Dosage Form', value: product.form },
+    product.shelfLife && { label: 'Shelf Life', value: product.shelfLife },
+    product.storage && { label: 'Storage Conditions', value: product.storage },
+  ].filter(Boolean)
+
   return (
     <>
       {/* Breadcrumb */}
       <div className="bg-gray-50 border-b border-gray-100">
         <div className="container-max px-4 sm:px-6 lg:px-8 py-3">
-          <nav className="flex items-center gap-2 text-sm text-gray-500">
+          <nav className="flex items-center gap-2 text-sm text-gray-500" aria-label="Breadcrumb">
             <Link to="/" className="hover:text-brand-blue transition-colors">Home</Link>
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -43,6 +88,8 @@ export default function ProductDetail() {
                   <img
                     src={product.image}
                     alt={product.name}
+                    loading="lazy"
+                    decoding="async"
                     onError={() => setImgError(true)}
                     className="w-full h-full object-contain p-8"
                   />
@@ -71,8 +118,15 @@ export default function ProductDetail() {
 
             {/* Right — details */}
             <div>
-              <span className="text-xs font-semibold text-brand-teal uppercase tracking-wider bg-brand-teal-light px-3 py-1 rounded-full">{cat?.label}</span>
-              <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mt-3 mb-2 leading-tight">{product.name}</h1>
+              {/* Badges row */}
+              <div className="flex items-center gap-2 mb-3 flex-wrap">
+                <span className="text-xs font-semibold text-brand-teal uppercase tracking-wider bg-brand-teal-light px-3 py-1 rounded-full">
+                  {cat?.label}
+                </span>
+                {product.badge && <ProductBadge type={product.badge} />}
+              </div>
+
+              <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mt-1 mb-2 leading-tight">{product.name}</h1>
               <p className="text-brand-blue font-medium mb-6">{product.form}</p>
 
               <div className="space-y-5">
@@ -82,8 +136,41 @@ export default function ProductDetail() {
                 <InfoRow label="Packaging" value={product.packaging} />
               </div>
 
+              {/* Clinical indications */}
+              {product.indications && product.indications.length > 0 && (
+                <div className="mt-6 pt-5 border-t border-gray-100">
+                  <dt className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Clinical Indications</dt>
+                  <div className="flex flex-wrap gap-2">
+                    {product.indications.map((ind, i) => (
+                      <span key={i} className="text-xs font-medium bg-brand-blue-light text-brand-blue border border-brand-blue/15 px-3 py-1.5 rounded-full">
+                        {ind}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Specifications table */}
+              {specs.length > 0 && (
+                <div className="mt-6 border border-gray-100 rounded-xl overflow-hidden">
+                  <div className="bg-gray-50 px-4 py-2.5 border-b border-gray-100">
+                    <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Product Specifications</span>
+                  </div>
+                  <table className="w-full text-sm">
+                    <tbody>
+                      {specs.map((spec, i) => (
+                        <tr key={i} className={i % 2 === 0 ? 'bg-white' : 'bg-gray-50/40'}>
+                          <td className="px-4 py-3 text-xs font-semibold text-gray-400 uppercase tracking-wide w-[40%] align-top">{spec.label}</td>
+                          <td className="px-4 py-3 text-gray-700">{spec.value}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+
               {/* Quality note */}
-              <div className="mt-8 bg-brand-blue-light border border-brand-blue/20 rounded-xl p-4 flex gap-3">
+              <div className="mt-6 bg-brand-blue-light border border-brand-blue/20 rounded-xl p-4 flex gap-3">
                 <svg className="w-5 h-5 text-brand-blue flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                 </svg>
@@ -94,7 +181,7 @@ export default function ProductDetail() {
               </div>
 
               {/* CTAs */}
-              <div className="mt-8 flex flex-col sm:flex-row gap-4">
+              <div className="mt-6 flex flex-col sm:flex-row gap-4">
                 <Link
                   to={`/enquiry?product=${encodeURIComponent(product.name)}`}
                   className="btn-teal flex-1 justify-center text-base py-3.5"
@@ -126,30 +213,9 @@ export default function ProductDetail() {
           <div className="container-max">
             <h2 className="text-2xl font-bold text-gray-900 mb-8">More {cat?.label}</h2>
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {related.map(p => {
-                const [relImgError, setRelImgError] = useState(false)
-                return (
-                  <Link key={p.id} to={`/products/${p.id}`} className="bg-white border border-gray-100 rounded-xl overflow-hidden hover:shadow-md transition-shadow group">
-                    <div className="h-36 bg-white flex items-center justify-center border-b border-gray-50">
-                      {p.image && !relImgError ? (
-                        <img
-                          src={p.image}
-                          alt={p.name}
-                          onError={() => setRelImgError(true)}
-                          className="w-full h-full object-contain p-4"
-                        />
-                      ) : (
-                        <span className="text-4xl">{cat?.icon}</span>
-                      )}
-                    </div>
-                    <div className="p-4">
-                      <h3 className="font-semibold text-gray-900 group-hover:text-brand-blue transition-colors mb-1">{p.name}</h3>
-                      <p className="text-xs text-gray-400 mb-1">{p.form}</p>
-                      <p className="text-sm text-gray-500 line-clamp-2">{p.composition}</p>
-                    </div>
-                  </Link>
-                )
-              })}
+              {related.map(p => (
+                <RelatedProductCard key={p.id} product={p} cat={cat} />
+              ))}
             </div>
           </div>
         </section>

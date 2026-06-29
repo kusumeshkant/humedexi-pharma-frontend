@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import SectionHeader from '../components/ui/SectionHeader'
 import { CATEGORIES, PRODUCTS } from '../data/products'
@@ -67,14 +67,49 @@ const TRUST_POINTS = [
   },
 ]
 
-const STATS = [
-  { value: `${PRODUCTS.length}`, label: 'Live Products' },
-  { value: '7+', label: 'Product Categories' },
-  { value: '3', label: 'Major Certifications' },
-  { value: '100%', label: 'Quality Assurance' },
+const PARTNER_OPTIONS = [
+  {
+    icon: '📋',
+    title: 'Request a Quote',
+      desc: "Get competitive pricing for your product requirement. Fill in the enquiry form and we will respond within 24 hours.",
+    cta: 'Request Quote',
+    to: '/enquiry',
+    style: 'border-brand-blue/20 hover:border-brand-blue',
+    ctaStyle: 'btn-primary',
+  },
+  {
+    icon: '🤝',
+    title: 'Become a Distributor',
+    desc: 'Join our growing distributor network across Bihar and Eastern India. Attractive margins, consistent supply, full sales support.',
+    cta: 'Become a Distributor',
+    to: '/enquiry',
+    style: 'border-brand-teal/20 hover:border-brand-teal bg-brand-teal-light/30',
+    ctaStyle: 'btn-teal',
+  },
+  {
+    icon: '📞',
+    title: 'Contact Sales Team',
+    desc: 'Prefer to talk? Our sales team is available to help with product selection, bulk pricing, and custom requirements.',
+    cta: 'Contact Sales',
+    to: '/contact',
+    style: 'border-gray-200 hover:border-gray-400',
+    ctaStyle: 'btn-secondary',
+  },
 ]
 
 export default function Home() {
+  const activeCats = useMemo(
+    () => CATEGORIES.filter(cat => PRODUCTS.some(p => p.category === cat.id)),
+    []
+  )
+
+  const STATS = [
+    { value: `${PRODUCTS.length}`, label: 'Live Products' },
+    { value: `${activeCats.length}`, label: 'Product Categories' },
+    { value: '3', label: 'Major Certifications' },
+    { value: '100%', label: 'Quality Assurance' },
+  ]
+
   return (
     <>
       {/* ─── HERO ─────────────────────────────────────────────────────────── */}
@@ -201,8 +236,8 @@ export default function Home() {
             title="Comprehensive Pharmaceutical Range"
             subtitle="From essential antibiotics to speciality formulations — a complete range trusted by healthcare professionals."
           />
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-4">
-            {CATEGORIES.map(cat => (
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+            {activeCats.map(cat => (
               <Link
                 key={cat.id}
                 to={`/products?category=${cat.id}`}
@@ -262,6 +297,32 @@ export default function Home() {
                   <h3 className="font-semibold text-gray-900 mb-2">{pt.title}</h3>
                   <p className="text-sm text-gray-500 leading-relaxed">{pt.desc}</p>
                 </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ─── PARTNER PROGRAMS ─────────────────────────────────────────────── */}
+      <section className="section-pad bg-gray-50">
+        <div className="container-max">
+          <SectionHeader
+            tag="Work With Us"
+            title="Partner With Humedaxive Pharma"
+            subtitle="Doctors, distributors, hospitals and wholesalers — we have a programme designed specifically for your needs."
+          />
+          <div className="grid md:grid-cols-3 gap-6">
+            {PARTNER_OPTIONS.map((opt, i) => (
+              <div key={i} className={`bg-white border rounded-2xl p-7 flex flex-col transition-all ${opt.style}`}>
+                <div className="text-4xl mb-4">{opt.icon}</div>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">{opt.title}</h3>
+                <p className="text-gray-500 text-sm leading-relaxed flex-1 mb-6">{opt.desc}</p>
+                <Link to={opt.to} className={`${opt.ctaStyle} justify-center`}>
+                  {opt.cta}
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </Link>
               </div>
             ))}
           </div>

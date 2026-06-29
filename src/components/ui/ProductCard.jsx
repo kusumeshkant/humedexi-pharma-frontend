@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { CATEGORIES } from '../../data/products'
+import ProductBadge from './ProductBadge'
 
 export default function ProductCard({ product }) {
   const cat = CATEGORIES.find(c => c.id === product.category)
@@ -8,12 +9,14 @@ export default function ProductCard({ product }) {
 
   return (
     <div className="bg-white border border-gray-100 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 group flex flex-col">
-      {/* Product image — object-contain so full box is always visible */}
+      {/* Image */}
       <div className="relative bg-white h-52 flex items-center justify-center overflow-hidden">
         {product.image && !imgError ? (
           <img
             src={product.image}
             alt={product.name}
+            loading="lazy"
+            decoding="async"
             onError={() => setImgError(true)}
             className="w-full h-full object-contain p-4 group-hover:scale-105 transition-transform duration-500"
           />
@@ -22,23 +25,32 @@ export default function ProductCard({ product }) {
             <span className="text-5xl mb-2">{cat?.icon || '💊'}</span>
           </div>
         )}
-        {/* Category badge */}
+        {/* Category — top left */}
         <div className="absolute top-3 left-3">
           <span className="text-xs font-semibold text-brand-blue uppercase tracking-wider bg-white/90 backdrop-blur-sm px-2.5 py-1 rounded-full shadow-sm border border-brand-blue/10">
             {cat?.label}
           </span>
         </div>
+        {/* Rx / OTC / Nutra badge — top right */}
+        {product.badge && (
+          <div className="absolute top-3 right-3">
+            <ProductBadge type={product.badge} />
+          </div>
+        )}
       </div>
 
       {/* Content */}
       <div className="p-5 flex flex-col flex-1">
-        <h3 className="font-bold text-gray-900 text-base mb-1 group-hover:text-brand-blue transition-colors leading-snug">
+        <h3 className="font-bold text-gray-900 text-base mb-1 group-hover:text-brand-blue transition-colors leading-snug line-clamp-1">
           {product.brandName || product.name}
         </h3>
         <p className="text-xs text-gray-400 font-medium mb-2">{product.form}</p>
-        <p className="text-sm text-gray-500 leading-relaxed mb-4 line-clamp-2 flex-1">
+        <p className="text-sm text-gray-500 leading-relaxed mb-2 line-clamp-2 flex-1">
           {product.composition}
         </p>
+        {product.therapeuticSegment && (
+          <p className="text-xs text-brand-blue/70 font-medium mb-3">{product.therapeuticSegment}</p>
+        )}
 
         <div className="flex gap-2 mt-auto pt-3 border-t border-gray-50">
           <Link

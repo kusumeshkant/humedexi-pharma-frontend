@@ -12,8 +12,26 @@ const VALUES = [
 const TIMELINE = [
   { year: 'Foundation', title: 'Established in Bihar', desc: 'Founded in 2018, Humedaxive Pharma was established with a singular mission: to make quality medicines accessible and affordable in Bihar and beyond.' },
   { year: 'Certification', title: 'WHO-GMP & ISO Certified', desc: 'Achieved WHO-GMP and ISO certifications, validating our manufacturing standards against international benchmarks.' },
-  { year: 'Expansion', title: 'Product Range Growth', desc: 'Expanded from core generics to a comprehensive portfolio covering 7 product categories and 500+ formulations.' },
+  { year: 'Expansion', title: 'Product Range Growth', desc: 'Expanded from core generics to a comprehensive portfolio covering multiple product categories and formulations across therapeutic segments.' },
   { year: 'Today', title: 'Trusted Pharma Partner', desc: 'Serving doctors, hospitals, clinics and distributors across the region with consistent supply and competitive pricing.' },
+]
+
+const MFG_STANDARDS = [
+  { icon: '🏭', title: 'WHO-GMP Facility', desc: 'Our manufacturing unit operates under WHO Good Manufacturing Practice guidelines — the global gold standard for pharmaceutical production.' },
+  { icon: '🧪', title: 'Analytical QC Lab', desc: 'Fully equipped quality control laboratory for testing raw materials, in-process samples, and finished products at every stage.' },
+  { icon: '📋', title: 'Validated Processes', desc: 'All manufacturing processes are validated and documented. SOPs are followed strictly with no deviation from approved protocols.' },
+  { icon: '🌡️', title: 'Controlled Environment', desc: 'Temperature-controlled, humidity-monitored clean areas for sensitive formulations including injectables, capsules, and creams.' },
+  { icon: '📦', title: 'Regulated Packaging', desc: 'Child-resistant and tamper-evident packaging with complete batch information, shelf life, and regulatory labels on every pack.' },
+  { icon: '🔍', title: 'Stability Testing', desc: 'ICH-guideline-compliant stability studies conducted to validate shelf life claims under real-world and accelerated conditions.' },
+]
+
+const WHY_CHOOSE = [
+  { icon: '✅', title: 'Triple Certified Quality', desc: 'WHO-GMP, ISO 9001:2015, and FSSAI certified — our quality credentials are verified by independent regulatory bodies, not just self-declared.' },
+  { icon: '📦', title: 'Broad Product Portfolio', desc: 'Capsules, tablets, injections, syrups, creams, and soaps across 10+ therapeutic segments — a single supplier for most of your pharmaceutical needs.' },
+  { icon: '🚚', title: 'Reliable Supply', desc: 'Adequate production capacity and inventory management ensure consistent supply. No stockouts, no delays — your patients don\'t wait.' },
+  { icon: '💰', title: 'Competitive Pricing', desc: 'Direct manufacturer pricing with attractive margins for distributors and bulk buyers. Volume discounts available on request.' },
+  { icon: '🏥', title: 'Hospital & Institution Ready', desc: 'Our certifications qualify us for hospital formularies, government tenders, and institutional procurement — documentation available on request.' },
+  { icon: '🤝', title: 'Dedicated Relationship', desc: 'A dedicated sales point of contact for every distributor. We answer your queries, resolve issues, and support your business growth.' },
 ]
 
 export default function About() {
@@ -38,10 +56,10 @@ export default function About() {
               <SectionHeader tag="Company Overview" title="Rooted in Bihar. Committed to India's Health." center={false} />
               <div className="space-y-5 text-gray-600 leading-relaxed">
                 <p>
-                  <strong className="text-gray-900">Humedaxive Pharma</strong> is a pharmaceutical company headquartered in Bihar, India. We manufacture and supply a wide range of pharmaceutical products — including capsules, tablets, injections, syrups, ointments, creams, and medicated soaps — to healthcare providers and distributors across the country.
+                  <strong className="text-gray-900">Humedaxive Pharma Private Limited</strong> is a pharmaceutical company headquartered in Bihar, India. We manufacture and supply a wide range of pharmaceutical products — including capsules, tablets, injections, syrups, ointments, creams, and medicated soaps — to healthcare providers and distributors across the country.
                 </p>
                 <p>
-                  Our operations are built on international quality standards. We hold <strong className="text-gray-900">WHO-GMP certification</strong>, ensuring our manufacturing processes meet global benchmarks for safety, efficacy, and consistency. Our <strong className="text-gray-900">ISO certification</strong> reflects our commitment to systematic quality management at every level.
+                  Our operations are built on international quality standards. We hold <strong className="text-gray-900">WHO-GMP certification</strong>, ensuring our manufacturing processes meet global benchmarks for safety, efficacy, and consistency. Our <strong className="text-gray-900">ISO 9001:2015 certification</strong> reflects our commitment to systematic quality management at every level. Our <strong className="text-gray-900">FSSAI license</strong> validates compliance for nutraceutical and food-category products.
                 </p>
                 <p>
                   We understand that when a doctor prescribes our product — their patient's health depends on it. That is why we take quality not as a regulatory requirement, but as a moral responsibility.
@@ -56,7 +74,7 @@ export default function About() {
             <div className="bg-gradient-to-br from-brand-blue-light to-brand-teal-light rounded-2xl p-8 grid grid-cols-2 gap-5">
               {[
                 { val: '500+', label: 'Product Formulations' },
-                { val: '7', label: 'Product Categories' },
+                { val: '6+', label: 'Product Categories' },
                 { val: '3', label: 'Quality Certifications' },
                 { val: '100%', label: 'Quality Tested' },
               ].map(s => (
@@ -130,6 +148,28 @@ export default function About() {
         </div>
       </section>
 
+      {/* Manufacturing Standards */}
+      <section className="section-pad bg-gray-50">
+        <div className="container-max">
+          <SectionHeader
+            tag="Manufacturing"
+            title="Production Standards That Set Us Apart"
+            subtitle="Our manufacturing capabilities are built to international benchmarks — not local minimums."
+          />
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {MFG_STANDARDS.map(item => (
+              <div key={item.title} className="bg-white rounded-xl p-6 border border-gray-100 shadow-sm flex gap-4">
+                <div className="text-3xl flex-shrink-0">{item.icon}</div>
+                <div>
+                  <h4 className="font-semibold text-gray-900 mb-2">{item.title}</h4>
+                  <p className="text-sm text-gray-500 leading-relaxed">{item.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Quality commitment */}
       <section className="section-pad bg-brand-blue-light">
         <div className="container-max">
@@ -151,6 +191,86 @@ export default function About() {
                 </div>
               ))}
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Distribution Network */}
+      <section className="section-pad bg-white">
+        <div className="container-max">
+          <div className="grid lg:grid-cols-2 gap-14 items-center">
+            <div>
+              <SectionHeader tag="Distribution" title="Our Distribution Network" center={false} />
+              <p className="text-gray-600 leading-relaxed mb-6">
+                Headquartered in Bihar, Humedaxive Pharma operates a growing distribution network that reaches healthcare providers and stockists across Eastern India. We work directly with:
+              </p>
+              <ul className="space-y-4 mb-8">
+                {[
+                  { icon: '🏥', label: 'Hospitals & Nursing Homes', desc: 'Direct supply to institutional buyers with bulk pricing, credit terms, and documentation for formulary inclusion.' },
+                  { icon: '👨‍⚕️', label: 'Doctors & Clinics', desc: 'Direct-to-doctor programs with product samples, detailing support, and responsive order fulfillment.' },
+                  { icon: '📦', label: 'Stockists & Distributors', desc: 'Exclusive and non-exclusive distributor partnerships with attractive trade margins and sales support.' },
+                  { icon: '🏪', label: 'Retail Pharmacies', desc: 'Supply through authorized distributors to retail pharmacy channels with consistent product availability.' },
+                ].map(item => (
+                  <li key={item.label} className="flex gap-4">
+                    <span className="text-2xl flex-shrink-0">{item.icon}</span>
+                    <div>
+                      <div className="font-semibold text-gray-900">{item.label}</div>
+                      <div className="text-sm text-gray-500 mt-0.5">{item.desc}</div>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+              <Link to="/enquiry" className="btn-primary">Enquire About Distribution</Link>
+            </div>
+
+            <div className="bg-gradient-to-br from-brand-blue to-brand-blue-dark text-white rounded-2xl p-10">
+              <h3 className="text-2xl font-bold mb-6">Become a Distributor</h3>
+              <p className="text-blue-100 leading-relaxed mb-6">
+                We are actively expanding our distribution network across Bihar and Eastern India. If you are a pharma stockist, C&F agent, or institutional buyer looking for a reliable WHO-GMP certified supplier, we'd like to hear from you.
+              </p>
+              <ul className="space-y-3 mb-8">
+                {[
+                  'Attractive trade margins on all products',
+                  'Consistent supply — no stockout issues',
+                  'Marketing and detailing support',
+                  'Flexible credit terms for established partners',
+                  'Dedicated relationship manager',
+                ].map((pt, i) => (
+                  <li key={i} className="flex items-start gap-2 text-sm text-blue-100">
+                    <svg className="w-4 h-4 text-blue-300 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                    </svg>
+                    {pt}
+                  </li>
+                ))}
+              </ul>
+              <Link to="/enquiry" className="inline-flex items-center gap-2 bg-white text-brand-blue font-bold px-6 py-3 rounded-md hover:bg-blue-50 transition-colors">
+                Apply Now
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Why Choose Humedaxive */}
+      <section className="section-pad bg-gray-50">
+        <div className="container-max">
+          <SectionHeader
+            tag="Why Choose Us"
+            title="The Humedaxive Advantage"
+            subtitle="Six reasons why healthcare professionals and distributors prefer us over generic suppliers."
+          />
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {WHY_CHOOSE.map((item, i) => (
+              <div key={i} className="bg-white rounded-xl p-6 border border-gray-100 hover:shadow-md transition-shadow">
+                <div className="text-3xl mb-4">{item.icon}</div>
+                <h3 className="font-semibold text-gray-900 mb-2">{item.title}</h3>
+                <p className="text-sm text-gray-500 leading-relaxed">{item.desc}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
