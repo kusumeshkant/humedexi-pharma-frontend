@@ -1,0 +1,117 @@
+export const CATEGORIES = [
+  { id: 'capsules',   label: 'Capsules',   icon: '💊' },
+  { id: 'tablets',    label: 'Tablets',    icon: '⬜' },
+  { id: 'injections', label: 'Injections', icon: '💉' },
+  { id: 'syrups',     label: 'Syrups',     icon: '🧴' },
+  { id: 'ointments',  label: 'Ointments',  icon: '🫙' },
+  { id: 'creams',     label: 'Creams',     icon: '🫧' },
+  { id: 'soaps',      label: 'Soaps',      icon: '🧼' },
+]
+
+export const PRODUCTS = [
+  // ─── TABLETS ──────────────────────────────────────────────────────────────
+  {
+    id: 'azixive-250-500',
+    category: 'tablets',
+    name: 'AZIXIVE 250/500',
+    brandName: 'AZIXIVE',
+    composition: 'Azithromycin 250 mg / 500 mg Tablets',
+    usage: 'Community Acquired Pneumonia (CAP), Pharyngitis/Tonsillitis, Skin & Soft Tissue Infections (SSTI), Pelvic Inflammatory Disease, Chronic Bronchitis, Genitourinary Tract Infections.',
+    benefits: 'Broad-spectrum antibiotic active against both Gram +ve & Gram -ve organisms. Stable at gastric pH, possesses extensive tissue penetration and long life. Achieves superior bacteriological eradication rates compared to Clarithromycin in streptococcal pharyngitis.',
+    packaging: '6 Tablets per strip (500mg) / 10 Tablets per strip (250mg)',
+    form: 'Tablets',
+    image: '/products/azixive.jpeg',
+  },
+  {
+    id: 'humen-sp',
+    category: 'tablets',
+    name: 'HUMEN-SP',
+    brandName: 'HUMEN-SP',
+    composition: 'Aceclofenac 100 mg + Paracetamol 325 mg + Serratiopeptidase 15 mg Tablets',
+    usage: 'Low Back Pain, Dental Pain, Ankylosing Spondylitis, Frozen Shoulder, Osteoarthritis, Sports Pain, Migraine attacks.',
+    benefits: 'Aceclofenac effectively reduces morning stiffness in osteoarthritis and shows stimulatory effects on cartilage matrix synthesis. Paracetamol relieves aches and reduces fever. Serratiopeptidase ensures rapid wound healing and resolves inflammatory edema. The combination of NSAIDs with Serratiopeptidase is more effective than Bromelain or Trypsin-Chymotrypsin combinations.',
+    packaging: '10 Tablets per strip, 10 strips per box',
+    form: 'Tablets',
+    image: '/products/humen-sp.jpeg',
+  },
+
+  // ─── CAPSULES ─────────────────────────────────────────────────────────────
+  {
+    id: 'hupan-dsr',
+    category: 'capsules',
+    name: 'Hupan DSR',
+    brandName: 'Hupan DSR',
+    composition: 'Pantoprazole 40 mg + Domperidone 30 mg SR Capsule',
+    usage: 'Acid Peptic Disorders, Dyspepsia, Hyperacidity, Gastro-oesophageal Reflux Disease (GERD), Gastric/Duodenal Ulcers.',
+    benefits: 'Pantoprazole (Better than Esomeprazole) provides significantly faster first-time relief from daytime & night-time GERD-related symptoms. Domperidone acts as an ideal prokinetic and antiemetic agent that prevents reflux. Also available as Hupan-40 Tablets and Hupan-40 Injection.',
+    packaging: '10 Capsules per strip, 10 strips per box',
+    form: 'Capsules (SR)',
+    image: '/products/hupan-dsr.jpeg',
+  },
+  {
+    id: 'hupan-d-sr',
+    category: 'capsules',
+    name: 'HUPAN-D SR',
+    brandName: 'HUPAN-D SR',
+    composition: 'Pantoprazole (Enteric Coated) 40 mg + Domperidone (Sustained Release) 30 mg Capsules',
+    usage: 'Heartburn & Acid Reflux, Backflow prevention, Nausea & Vomiting, Gastric/Duodenal Ulcers, GERD.',
+    benefits: 'Relief in a capsule — Pantoprazole (Enteric Coated) suppresses acid secretion effectively. Domperidone (Sustained Release) prevents backflow, alleviates nausea and vomiting, and promotes gastric motility. Dual-action formula for complete GERD management.',
+    packaging: '10 Capsules per strip, 10 strips per box',
+    form: 'Capsules (Enteric Coated + SR)',
+    image: '/products/hupan-d-sr.jpeg',
+  },
+  {
+    id: 'iraxive-100',
+    category: 'capsules',
+    name: 'IRAXIVE 100/200',
+    brandName: 'IRAXIVE',
+    composition: 'Itraconazole 100 mg / 200 mg Capsules',
+    usage: 'Aspergillosis, Candidiasis, Cryptococcosis, and a broad range of systemic and superficial fungal infections. Effective empirical antifungal therapy.',
+    benefits: 'Broad spectrum of antifungal activity. Low rate of recurrence. Higher clinical & mycological cure rates. Itraconazole is a useful and safe agent in empirical antifungal therapy — complete eradication of tough fungal infections.',
+    packaging: '4 Capsules per strip (200mg) / 10 Capsules per strip (100mg)',
+    form: 'Capsules',
+    image: '/products/iraxive.jpeg',
+  },
+
+  // ─── SYRUPS ───────────────────────────────────────────────────────────────
+  {
+    id: 'humezyme-syrup',
+    category: 'syrups',
+    name: 'HUMEZYME Syrup',
+    brandName: 'HUMEZYME',
+    composition: 'Diastase 50 mg + Pepsin 10 mg per 5 ml Syrup',
+    usage: 'Stomach Fullness, Loss of Appetite, Indigestion, Flatulence, Bloating. Digestive aid for patients with chronic illness-related appetite loss.',
+    benefits: 'Digests carbohydrate and protein with powerful and effective diastatic and peptic activity. Prevents feelings of bloating and exhaustion after a big meal. Helps in smooth passage of food through the gastrointestinal tract. Highly preferred to tone up impaired digestion. Also available as HUMEZYME Drop (Diastase 33.33mg + Pepsin 5mg) and HUMEZYME Capsule (Diastase 50mg + Pepsin 10mg).',
+    packaging: '200 ml bottle with measuring cup',
+    form: 'Oral Syrup',
+    image: '/products/humezyme-syrup.jpeg',
+  },
+
+  // ─── CREAMS ───────────────────────────────────────────────────────────────
+  {
+    id: 'lulixive-cream',
+    category: 'creams',
+    name: 'LULIXIVE Cream',
+    brandName: 'LULIXIVE',
+    composition: 'Luliconazole 1% w/w Cream',
+    usage: "Tinea Pedis (Athlete's Foot), Tinea Cruris (Jock Itch), Tinea Corporis (Ringworm), Cutaneous Candidiasis.",
+    benefits: "Luliconazole is an azole antifungal that works by preventing the growth of fungus. Potent antifungal activity against dermatophytes and favourable activity against Candida albicans, Malassezia spp. & Aspergillus fumigatus. Shows more potent activity than lanoconazole. Shows improvement in clinical symptoms of interdigital & plantar tinea. Greater reservoir property in stratum corneum than terbinafine. Also available as LULIXIVE Lotion.",
+    packaging: '15 gm / 30 gm tube',
+    form: 'Topical Cream',
+    image: '/products/lulixive-cream.jpeg',
+  },
+
+  // ─── SOAPS ────────────────────────────────────────────────────────────────
+  {
+    id: 'ketoxive-soap',
+    category: 'soaps',
+    name: 'KETOXIVE Soap',
+    brandName: 'KETOXIVE',
+    composition: 'Ketoconazole Medicated Soap',
+    usage: 'Treatment and prevention of fungal skin infections. Daily antiseptic skin hygiene for children and adults.',
+    benefits: 'Defeats fungal infections with Ketoconazole molecule. Ensures a healthy, safe zone for skin by creating a protective barrier against fungal pathogens. Gentle enough for regular use while providing clinical-grade antifungal protection.',
+    packaging: '75 gm bar',
+    form: 'Medicated Soap',
+    image: '/products/ketoxive-soap.jpeg',
+  },
+]
