@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react'
+import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react'
 import ProductCard from './ProductCard'
 
 function useItemsPerView() {
@@ -23,8 +23,7 @@ function useItemsPerView() {
 
 export default function ProductCarousel({ products }) {
   const n = products.length
-  // Triple the products array so we always have clones on both sides
-  const tripled = [...products, ...products, ...products]
+  const tripled = useMemo(() => [...products, ...products, ...products], [products])
   const total = tripled.length
 
   const itemsPerView = useItemsPerView()

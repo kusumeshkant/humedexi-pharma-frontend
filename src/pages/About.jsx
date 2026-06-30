@@ -74,7 +74,7 @@ export default function About() {
             <div className="bg-gradient-to-br from-brand-blue-light to-brand-teal-light rounded-2xl p-8 grid grid-cols-2 gap-5">
               {[
                 { val: '500+', label: 'Product Formulations' },
-                { val: '6+', label: 'Product Categories' },
+                { val: '7+', label: 'Product Categories' },
                 { val: '3', label: 'Quality Certifications' },
                 { val: '100%', label: 'Quality Tested' },
               ].map(s => (

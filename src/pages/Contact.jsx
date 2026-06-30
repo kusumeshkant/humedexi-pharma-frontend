@@ -172,26 +172,26 @@ export default function Contact() {
 
                     <div className="grid sm:grid-cols-2 gap-5">
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1.5">Full Name <span className="text-red-500">*</span></label>
-                        <input name="name" value={form.name} onChange={handleChange} placeholder="Dr. / Mr. / Ms." className={`form-input ${errors.name ? 'border-red-400 focus:ring-red-300' : ''}`} />
+                        <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1.5">Full Name <span className="text-red-500">*</span></label>
+                        <input id="name" name="name" value={form.name} onChange={handleChange} placeholder="Dr. / Mr. / Ms." className={`form-input ${errors.name ? 'border-red-400 focus:ring-red-300' : ''}`} />
                         {errors.name && <p className="text-xs text-red-500 mt-1">{errors.name}</p>}
                       </div>
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1.5">Phone Number <span className="text-red-500">*</span></label>
-                        <input name="phone" type="tel" value={form.phone} onChange={handleChange} placeholder="10-digit mobile number" className={`form-input ${errors.phone ? 'border-red-400 focus:ring-red-300' : ''}`} />
+                        <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1.5">Phone Number <span className="text-red-500">*</span></label>
+                        <input id="phone" name="phone" type="tel" value={form.phone} onChange={handleChange} placeholder="10-digit mobile number" className={`form-input ${errors.phone ? 'border-red-400 focus:ring-red-300' : ''}`} />
                         {errors.phone && <p className="text-xs text-red-500 mt-1">{errors.phone}</p>}
                       </div>
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1.5">Email Address <span className="text-gray-400 font-normal">(optional)</span></label>
-                      <input name="email" type="email" value={form.email} onChange={handleChange} placeholder="you@example.com" className={`form-input ${errors.email ? 'border-red-400 focus:ring-red-300' : ''}`} />
+                      <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1.5">Email Address <span className="text-gray-400 font-normal">(optional)</span></label>
+                      <input id="email" name="email" type="email" value={form.email} onChange={handleChange} placeholder="you@example.com" className={`form-input ${errors.email ? 'border-red-400 focus:ring-red-300' : ''}`} />
                       {errors.email && <p className="text-xs text-red-500 mt-1">{errors.email}</p>}
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1.5">Your Message <span className="text-red-500">*</span></label>
-                      <textarea name="message" value={form.message} onChange={handleChange} rows={5} placeholder="How can we help you?" className={`form-input resize-none ${errors.message ? 'border-red-400 focus:ring-red-300' : ''}`} />
+                      <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1.5">Your Message <span className="text-red-500">*</span></label>
+                      <textarea id="message" name="message" value={form.message} onChange={handleChange} rows={5} placeholder="How can we help you?" className={`form-input resize-none ${errors.message ? 'border-red-400 focus:ring-red-300' : ''}`} />
                       {errors.message && <p className="text-xs text-red-500 mt-1">{errors.message}</p>}
                     </div>
 
