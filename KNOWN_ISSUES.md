@@ -39,6 +39,11 @@
 **File:** `src/components/ui/ProductCarousel.jsx`  
 **Detail:** When `itemsPerView` changes (breakpoint crossing), `idx` is reset to `n` but the dot calculation uses `Math.floor(activeSlide / itemsPerView)`. On the exact resize frame, the dot may briefly show an incorrect active state before stabilizing. Cosmetic only — corrects itself on next interaction.
 
+### LOW — 2 npm audit vulnerabilities (dev-only, production-safe)
+**Packages:** `esbuild`, `vite`  
+**Detail:** `npm audit` reports 2 low-severity vulnerabilities. Both are in the Vite dev server (not the production build toolchain). Production builds (`npm run build`) are unaffected. Fix requires `npm audit fix --force` which would upgrade Vite from v5 to v8 — a breaking change deliberately deferred. These vulnerabilities do NOT appear in the deployed production bundle and pose no risk to end users.  
+**Action:** Revisit when upgrading Vite to v8 in a future phase.
+
 ---
 
 ## Resolved (in Phase 2 QA)
