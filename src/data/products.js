@@ -278,7 +278,7 @@ export const PRODUCTS = [
     badge: 'rx',
     name: 'KETOXIVE Soap',
     brandName: 'KETOXIVE',
-    composition: 'Ketoconazole Medicated Soap 75gm',
+    composition: 'Ketoconazole 2% Medicated Soap',
     therapeuticSegment: 'Dermatology',
     strength: 'Ketoconazole 2%',
     route: 'Topical',

@@ -225,13 +225,13 @@ export default function Enquiry() {
 
                     <div className="grid sm:grid-cols-2 gap-5">
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1.5">Full Name <span className="text-red-500">*</span></label>
-                        <input name="name" value={form.name} onChange={handleChange} placeholder="Your full name" className={`form-input ${errors.name ? 'border-red-400' : ''}`} />
+                        <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1.5">Full Name <span className="text-red-500">*</span></label>
+                        <input id="name" name="name" value={form.name} onChange={handleChange} placeholder="Your full name" className={`form-input ${errors.name ? 'border-red-400' : ''}`} />
                         {errors.name && <p className="text-xs text-red-500 mt-1">{errors.name}</p>}
                       </div>
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1.5">Organization Type <span className="text-red-500">*</span></label>
-                        <select name="orgType" value={form.orgType} onChange={handleChange} className={`form-input bg-white ${errors.orgType ? 'border-red-400' : ''}`}>
+                        <label htmlFor="orgType" className="block text-sm font-medium text-gray-700 mb-1.5">Organization Type <span className="text-red-500">*</span></label>
+                        <select id="orgType" name="orgType" value={form.orgType} onChange={handleChange} className={`form-input bg-white ${errors.orgType ? 'border-red-400' : ''}`}>
                           <option value="">Select type...</option>
                           {ORG_TYPES.map(t => <option key={t} value={t}>{t}</option>)}
                         </select>
@@ -240,26 +240,26 @@ export default function Enquiry() {
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1.5">Organization / Clinic / Hospital Name <span className="text-gray-400 font-normal">(optional)</span></label>
-                      <input name="organization" value={form.organization} onChange={handleChange} placeholder="e.g. City General Hospital, ABC Distributors" className="form-input" />
+                      <label htmlFor="organization" className="block text-sm font-medium text-gray-700 mb-1.5">Organization / Clinic / Hospital Name <span className="text-gray-400 font-normal">(optional)</span></label>
+                      <input id="organization" name="organization" value={form.organization} onChange={handleChange} placeholder="e.g. City General Hospital, ABC Distributors" className="form-input" />
                     </div>
 
                     <div className="grid sm:grid-cols-2 gap-5">
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1.5">Phone / WhatsApp <span className="text-red-500">*</span></label>
-                        <input name="phone" type="tel" value={form.phone} onChange={handleChange} placeholder="10-digit mobile number" className={`form-input ${errors.phone ? 'border-red-400' : ''}`} />
+                        <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1.5">Phone / WhatsApp <span className="text-red-500">*</span></label>
+                        <input id="phone" name="phone" type="tel" value={form.phone} onChange={handleChange} placeholder="10-digit mobile number" className={`form-input ${errors.phone ? 'border-red-400' : ''}`} />
                         {errors.phone && <p className="text-xs text-red-500 mt-1">{errors.phone}</p>}
                       </div>
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1.5">Email Address <span className="text-gray-400 font-normal">(optional)</span></label>
-                        <input name="email" type="email" value={form.email} onChange={handleChange} placeholder="you@example.com" className={`form-input ${errors.email ? 'border-red-400' : ''}`} />
+                        <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1.5">Email Address <span className="text-gray-400 font-normal">(optional)</span></label>
+                        <input id="email" name="email" type="email" value={form.email} onChange={handleChange} placeholder="you@example.com" className={`form-input ${errors.email ? 'border-red-400' : ''}`} />
                         {errors.email && <p className="text-xs text-red-500 mt-1">{errors.email}</p>}
                       </div>
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1.5">Product(s) of Interest <span className="text-red-500">*</span></label>
-                      <input name="productInterest" value={form.productInterest} onChange={handleChange} placeholder="e.g. Azithromycin Capsules, Paracetamol Tablets, or All Injections" className={`form-input ${errors.productInterest ? 'border-red-400' : ''}`} />
+                      <label htmlFor="productInterest" className="block text-sm font-medium text-gray-700 mb-1.5">Product(s) of Interest <span className="text-red-500">*</span></label>
+                      <input id="productInterest" name="productInterest" value={form.productInterest} onChange={handleChange} placeholder="e.g. Azithromycin Capsules, Paracetamol Tablets, or All Injections" className={`form-input ${errors.productInterest ? 'border-red-400' : ''}`} />
                       {errors.productInterest && <p className="text-xs text-red-500 mt-1">{errors.productInterest}</p>}
                       <p className="text-xs text-gray-400 mt-1">
                         <Link to="/products" className="text-brand-blue hover:underline">Browse our product catalogue</Link> to find the right products.
@@ -267,13 +267,13 @@ export default function Enquiry() {
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1.5">Estimated Quantity / Order Size <span className="text-gray-400 font-normal">(optional)</span></label>
-                      <input name="quantity" value={form.quantity} onChange={handleChange} placeholder="e.g. 500 strips/month, 10,000 units, or Monthly supply for 50 patients" className="form-input" />
+                      <label htmlFor="quantity" className="block text-sm font-medium text-gray-700 mb-1.5">Estimated Quantity / Order Size <span className="text-gray-400 font-normal">(optional)</span></label>
+                      <input id="quantity" name="quantity" value={form.quantity} onChange={handleChange} placeholder="e.g. 500 strips/month, 10,000 units, or Monthly supply for 50 patients" className="form-input" />
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1.5">Additional Requirements <span className="text-red-500">*</span></label>
-                      <textarea name="message" value={form.message} onChange={handleChange} rows={4} placeholder="Describe your requirement — delivery location, pricing expectation, preferred formulation, or any other details..." className={`form-input resize-none ${errors.message ? 'border-red-400' : ''}`} />
+                      <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1.5">Additional Requirements <span className="text-red-500">*</span></label>
+                      <textarea id="message" name="message" value={form.message} onChange={handleChange} rows={4} placeholder="Describe your requirement — delivery location, pricing expectation, preferred formulation, or any other details..." className={`form-input resize-none ${errors.message ? 'border-red-400' : ''}`} />
                       {errors.message && <p className="text-xs text-red-500 mt-1">{errors.message}</p>}
                     </div>
 
