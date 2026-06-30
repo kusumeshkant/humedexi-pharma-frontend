@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+# Block internal/utility pages from indexing
+Disallow: /privacy-policy
+Disallow: /terms
+Disallow: /disclaimer
+
+Sitemap: https://humedaxivepharma.com/sitemap.xml

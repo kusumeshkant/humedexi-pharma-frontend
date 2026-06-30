@@ -4,6 +4,25 @@
 
 ## Active / Open
 
+### LOW — No OG image (`/public/og-image.jpg` not yet created)
+**Detail:** `PageMeta` references `/og-image.jpg` as the default social preview image. Until this file exists, WhatsApp/LinkedIn link previews will not show an image. Fix: create a 1200×630px branded image at `public/og-image.jpg`.
+
+### LOW — sitemap.xml uses placeholder domain
+**File:** `public/sitemap.xml`  
+**Detail:** All URLs use `https://humedaxivepharma.com`. This must be updated to the actual production domain before Google Search Console submission.
+
+### LOW — robots.txt sitemap URL uses placeholder domain
+**File:** `public/robots.txt`  
+**Detail:** Same domain placeholder issue as sitemap.xml — update before GSC submission.
+
+### LOW — No apple-touch-icon PNG
+**File:** `index.html`  
+**Detail:** `apple-touch-icon` points to `favicon.svg`. SVG favicons work in modern browsers but iOS still prefers a 180×180px PNG. Low priority since this only affects the iOS homescreen icon.
+
+### LOW — Contact.jsx links to `/certifications` (non-existent page for certifications sidebar)
+**File:** `src/pages/Contact.jsx:136`  
+**Detail:** "View certification details →" link exists; Certifications page exists. This is not broken.
+
 ### LOW — Contact.jsx links to `/certifications` (non-existent route guard)
 **File:** `src/pages/Contact.jsx:136`  
 **Detail:** The "View certification details →" link inside the Certifications card points to `/certifications`. This route exists in App.jsx, so it is not broken — but the page is minimally styled. Not a bug, but the Certifications page may need content expansion in Phase 3.

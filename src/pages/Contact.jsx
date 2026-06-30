@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { sendContactEmail } from '../lib/emailjs'
+import PageMeta from '../components/seo/PageMeta'
 import {
   PHONE_PRIMARY_DISPLAY, PHONE_PRIMARY_HREF,
   PHONE_SECONDARY_DISPLAY, PHONE_SECONDARY_HREF,
@@ -60,6 +61,11 @@ export default function Contact() {
 
   return (
     <>
+      <PageMeta
+        title="Contact Us"
+        path="/contact"
+        description="Contact Humedaxive Pharma Private Limited. Reach our sales team for product enquiries, distribution partnerships, or general questions. Phone, WhatsApp, and email support available."
+      />
       {/* Header */}
       <section className="bg-gradient-to-r from-brand-blue to-brand-blue-dark text-white section-pad">
         <div className="container-max text-center">

@@ -3,6 +3,8 @@ import { useParams, Link, Navigate } from 'react-router-dom'
 import { PRODUCTS, CATEGORIES } from '../data/products'
 import { PHONE_PRIMARY_HREF } from '../config/constants'
 import ProductBadge from '../components/ui/ProductBadge'
+import PageMeta from '../components/seo/PageMeta'
+import { ProductSchema, BreadcrumbSchema } from '../components/seo/JsonLd'
 
 function RelatedProductCard({ product, cat }) {
   const [imgError, setImgError] = useState(false)
@@ -60,6 +62,19 @@ export default function ProductDetail() {
 
   return (
     <>
+      <PageMeta
+        title={product.name}
+        path={`/products/${product.id}`}
+        description={`${product.name} — ${product.composition}. ${product.usage} Manufactured by Humedaxive Pharma Private Limited. WHO-GMP certified.`}
+        ogType="product"
+        ogImage={product.image}
+      />
+      <ProductSchema product={product} />
+      <BreadcrumbSchema items={[
+        { name: 'Home', url: '/' },
+        { name: 'Products', url: '/products' },
+        { name: product.name },
+      ]} />
       {/* Breadcrumb */}
       <div className="bg-gray-50 border-b border-gray-100">
         <div className="container-max px-4 sm:px-6 lg:px-8 py-3">
