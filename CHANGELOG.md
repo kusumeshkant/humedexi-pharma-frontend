@@ -4,6 +4,22 @@ All notable changes to this project are documented here.
 
 ---
 
+## [3.1.0] — 2026-06-30 — RC1: Release Candidate Audit
+
+### Added
+- `public/og-image.svg` — 1200×630 branded SVG reference for OG/social preview image (convert to JPEG before launch)
+- `DEPLOYMENT.md` — pre-launch checklist and step-by-step guide for Vercel and Netlify
+
+### Fixed / Hardened
+- `npm audit fix` applied — reduced vulnerabilities from 6 to 2 (remaining 2 are dev-server only, not production-impacting)
+
+### Audited (no changes required)
+- 26 source files reviewed: zero `console.log`, zero unused hook imports, zero TODO/FIXME in functional code
+- All img tags have `alt` attributes; each page has exactly 1 `<h1>`; 13 ARIA attributes verified
+- Build: 0 errors, 0 warnings, 20 code-split chunks, vendor 164KB / initial gzip ~73KB
+
+---
+
 ## [3.0.0] — 2026-06-30 — Phase 3: Production Launch & Enterprise Readiness
 
 ### Added

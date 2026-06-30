@@ -1,9 +1,9 @@
 # Project Status
 
 **Last updated:** 2026-06-30  
-**Current phase:** Phase 3 — Production Launch (Complete)  
-**Build status:** ✅ Clean (`npm run build` passes, 0 errors, 0 warnings)  
-**Production readiness:** ✅ Ready to deploy
+**Current phase:** RC1 — Release Candidate (Audit complete, pending deployment)  
+**Build status:** ✅ Clean (`npm run build` passes, 0 errors, 0 warnings, 20 chunks)  
+**Production readiness:** ✅ Ready to deploy — see `DEPLOYMENT.md`
 
 ---
 
@@ -75,7 +75,7 @@
 
 ## Pending / Not Yet Started
 
-- [ ] **Deploy to hosting** — Vercel (recommended) or Netlify. Config files are ready.
+- [ ] **Deploy to hosting** — Vercel (recommended) or Netlify. Config files ready. See `DEPLOYMENT.md`.
 - [ ] **Set production .env** — Copy .env.example, fill in real values, set VITE_SITE_URL
 - [ ] **Replace sitemap domain** — Update `humedaxivepharma.com` in sitemap.xml and robots.txt once domain is confirmed
 - [ ] **OG image** — Create a 1200×630px branded image at `/public/og-image.jpg` for social previews
