@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import SectionHeader from '../components/ui/SectionHeader'
+import PageMeta from '../components/seo/PageMeta'
 
 const VALUES = [
   { icon: '🔬', title: 'Scientific Integrity', desc: 'Every formulation is developed with evidence-based practices and rigorous quality control from raw material to final product.' },
@@ -37,6 +38,11 @@ const WHY_CHOOSE = [
 export default function About() {
   return (
     <>
+      <PageMeta
+        title="About Us — WHO-GMP Certified Pharma Manufacturer"
+        path="/about"
+        description="Humedaxive Pharma Private Limited is a WHO-GMP & ISO 9001:2015 certified pharmaceutical manufacturer based in Bihar, India. Learn about our mission, quality standards, and distribution network."
+      />
       {/* Page header */}
       <section className="bg-gradient-to-r from-brand-blue to-brand-blue-dark text-white section-pad">
         <div className="container-max text-center">

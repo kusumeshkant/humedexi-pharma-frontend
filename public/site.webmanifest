@@ -1,0 +1,17 @@
+{
+  "name": "Humedaxive Pharma Private Limited",
+  "short_name": "Humedaxive",
+  "description": "WHO-GMP certified pharmaceutical company in Bihar, India",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#1a4f8a",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

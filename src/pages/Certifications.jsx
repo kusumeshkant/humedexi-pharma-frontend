@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import SectionHeader from '../components/ui/SectionHeader'
+import PageMeta from '../components/seo/PageMeta'
 
 const CERTS = [
   {
@@ -71,6 +72,11 @@ const QUALITY_STEPS = [
 export default function Certifications() {
   return (
     <>
+      <PageMeta
+        title="Certifications — WHO-GMP, ISO 9001:2015 & FSSAI"
+        path="/certifications"
+        description="Humedaxive Pharma holds WHO-GMP, ISO 9001:2015, and FSSAI certifications. Our manufacturing facility meets international pharmaceutical quality standards for safety, efficacy, and consistency."
+      />
       {/* Header */}
       <section className="bg-gradient-to-r from-brand-blue to-brand-blue-dark text-white section-pad">
         <div className="container-max text-center">

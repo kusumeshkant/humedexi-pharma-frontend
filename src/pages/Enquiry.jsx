@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useSearchParams, Link } from 'react-router-dom'
 import { PRODUCTS } from '../data/products'
 import { sendEnquiryEmail } from '../lib/emailjs'
+import PageMeta from '../components/seo/PageMeta'
 import {
   PHONE_PRIMARY_DISPLAY, PHONE_PRIMARY_HREF,
   PHONE_SECONDARY_DISPLAY, PHONE_SECONDARY_HREF,
@@ -91,6 +92,11 @@ export default function Enquiry() {
 
   return (
     <>
+      <PageMeta
+        title="Product Enquiry — Bulk Orders & Distribution"
+        path="/enquiry"
+        description="Submit a bulk product enquiry to Humedaxive Pharma. We supply doctors, hospitals, clinics, and distributors across Bihar and Eastern India. Fast response within 24 business hours."
+      />
       {/* Header */}
       <section className="bg-gradient-to-r from-brand-teal to-brand-teal-dark text-white section-pad">
         <div className="container-max text-center">

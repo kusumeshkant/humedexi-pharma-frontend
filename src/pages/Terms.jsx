@@ -1,10 +1,17 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { COMPANY_NAME, EMAIL_HREF, EMAIL } from '../config/constants'
+import PageMeta from '../components/seo/PageMeta'
 
 export default function Terms() {
   return (
     <>
+      <PageMeta
+        title="Terms of Use"
+        path="/terms"
+        description="Terms of Use for Humedaxive Pharma Private Limited's website. This website is intended for licensed healthcare professionals and registered pharmaceutical distributors."
+        noIndex
+      />
       <section className="bg-gradient-to-r from-brand-blue to-brand-blue-dark text-white section-pad">
         <div className="container-max text-center">
           <span className="inline-block bg-white/10 text-xs font-semibold uppercase tracking-widest px-4 py-2 rounded-full mb-4">Legal</span>

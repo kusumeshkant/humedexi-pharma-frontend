@@ -6,7 +6,8 @@ Priority: **P0** = blocking go-live · **P1** = do soon · **P2** = next phase �
 
 ## P0 — Go-Live Blockers
 
-- [ ] Verify `.env` file is present on the deployment host with correct EmailJS keys
+- [ ] Verify `.env` is set on deployment host: `VITE_EMAILJS_*`, `VITE_SITE_URL` (see `.env.example`)
+- [ ] Replace `humedaxivepharma.com` placeholder in `public/sitemap.xml` and `public/robots.txt` with actual domain
 - [ ] Test both forms (Contact + Enquiry) in production and confirm emails arrive
 - [ ] Confirm all 11 product images exist in `/public/products/` and load correctly
 - [ ] Deploy to hosting provider (Vercel / Netlify / shared hosting)

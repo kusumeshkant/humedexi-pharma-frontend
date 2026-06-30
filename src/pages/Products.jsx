@@ -3,6 +3,7 @@ import { useSearchParams, Link } from 'react-router-dom'
 import { CATEGORIES, PRODUCTS } from '../data/products'
 import ProductCard from '../components/ui/ProductCard'
 import SectionHeader from '../components/ui/SectionHeader'
+import PageMeta from '../components/seo/PageMeta'
 
 export default function Products() {
   const [searchParams, setSearchParams] = useSearchParams()
@@ -43,6 +44,11 @@ export default function Products() {
 
   return (
     <>
+      <PageMeta
+        title="Pharmaceutical Products Catalogue"
+        path="/products"
+        description="Browse Humedaxive Pharma's WHO-GMP certified product catalogue — tablets, capsules, injections, syrups, creams and soaps. Bulk enquiries welcome for doctors, hospitals and distributors."
+      />
       {/* Header */}
       <section className="bg-gradient-to-r from-brand-blue to-brand-blue-dark text-white section-pad">
         <div className="container-max text-center">

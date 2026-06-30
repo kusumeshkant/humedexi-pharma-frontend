@@ -1,10 +1,17 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { COMPANY_NAME, EMAIL_HREF, EMAIL } from '../config/constants'
+import PageMeta from '../components/seo/PageMeta'
 
 export default function PrivacyPolicy() {
   return (
     <>
+      <PageMeta
+        title="Privacy Policy"
+        path="/privacy-policy"
+        description="Privacy Policy for Humedaxive Pharma Private Limited. Learn how we collect, use and protect your information when you contact us or submit an enquiry."
+        noIndex
+      />
       <section className="bg-gradient-to-r from-brand-blue to-brand-blue-dark text-white section-pad">
         <div className="container-max text-center">
           <span className="inline-block bg-white/10 text-xs font-semibold uppercase tracking-widest px-4 py-2 rounded-full mb-4">Legal</span>

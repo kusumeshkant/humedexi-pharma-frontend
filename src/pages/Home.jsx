@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import SectionHeader from '../components/ui/SectionHeader'
 import { CATEGORIES, PRODUCTS } from '../data/products'
 import ProductCarousel from '../components/ui/ProductCarousel'
+import PageMeta from '../components/seo/PageMeta'
 import {
   PHONE_PRIMARY_DISPLAY, PHONE_PRIMARY_HREF,
   PHONE_SECONDARY_DISPLAY, PHONE_SECONDARY_HREF,
@@ -112,6 +113,10 @@ export default function Home() {
 
   return (
     <>
+      <PageMeta
+        path="/"
+        description="Humedaxive Pharma Private Limited — WHO-GMP & ISO certified pharmaceutical manufacturer in Bihar, India. Trusted B2B supplier of tablets, capsules, injections, syrups, creams and soaps for doctors, hospitals and distributors."
+      />
       {/* ─── HERO ─────────────────────────────────────────────────────────── */}
       <section className="relative bg-gradient-to-br from-brand-blue-dark via-brand-blue to-[#1e5fa8] text-white overflow-hidden">
         <div className="absolute inset-0 opacity-5">
